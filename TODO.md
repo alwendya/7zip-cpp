@@ -3,9 +3,6 @@ Things that could be improved:
 
 Wishlist:
 - Is it possible to do threading in the library, or do we need a .dll?
-- Move away form .dll into cross platform support
-- Create ability to uncompress parts of items into memory
-- Create ability to compress memory into archive files
 - Cmake support?
 
 Some links that could help:
