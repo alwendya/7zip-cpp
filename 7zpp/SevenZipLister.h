@@ -13,7 +13,7 @@ namespace SevenZip
 	public:
 		TString m_archivePath;
 
-		SevenZipLister( const SevenZipLibrary& library, const TString& archivePath );
+		SevenZipLister(const SevenZipLibrary& library, const TString& archivePath);
 		virtual ~SevenZipLister();
 
 		virtual bool ListArchive(const TString& password, ListCallback* callback = nullptr);

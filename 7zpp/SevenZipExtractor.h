@@ -12,10 +12,10 @@ namespace SevenZip
 	{
 	public:
 
-		SevenZipExtractor( const SevenZipLibrary& library, const TString& archivePath );
+		SevenZipExtractor(const SevenZipLibrary& library, const TString& archivePath);
 		virtual ~SevenZipExtractor();
 
-		virtual bool ExtractArchive( const TString& directory, ProgressCallback* callback = nullptr);
+		virtual bool ExtractArchive(const TString& directory, ProgressCallback* callback = nullptr);
 		virtual bool ExtractFilesFromArchive(const unsigned int* fileIndices,
 											 const unsigned int numberFiles,
 											 const TString& directory,

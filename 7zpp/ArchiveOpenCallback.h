@@ -9,30 +9,30 @@
 
 namespace SevenZip
 {
-namespace intl
-{
-	class ArchiveOpenCallback : public IArchiveOpenCallback, public ICryptoGetTextPassword
+	namespace intl
 	{
-	private:
+		class ArchiveOpenCallback : public IArchiveOpenCallback, public ICryptoGetTextPassword
+		{
+		private:
 
-		long m_refCount;
-		TString m_password;
+			long m_refCount;
+			TString m_password;
 
-	public:
+		public:
 
-		ArchiveOpenCallback(const TString& password);
-		virtual ~ArchiveOpenCallback() = default;
+			ArchiveOpenCallback(const TString& password);
+			virtual ~ArchiveOpenCallback() = default;
 
-		STDMETHOD(QueryInterface)( REFIID iid, void** ppvObject );
-		STDMETHOD_(ULONG, AddRef)();
-		STDMETHOD_(ULONG, Release)();
+			STDMETHOD(QueryInterface)(REFIID iid, void** ppvObject);
+			STDMETHOD_(ULONG, AddRef)();
+			STDMETHOD_(ULONG, Release)();
 
-		// IArchiveOpenCallback
-		STDMETHOD(SetTotal)( const UInt64* files, const UInt64* bytes );
-		STDMETHOD(SetCompleted)( const UInt64* files, const UInt64* bytes );
+			// IArchiveOpenCallback
+			STDMETHOD(SetTotal)(const UInt64* files, const UInt64* bytes);
+			STDMETHOD(SetCompleted)(const UInt64* files, const UInt64* bytes);
 
-		// ICryptoGetTextPassword
-		STDMETHOD(CryptoGetTextPassword)( BSTR* password );
-	};
-}
+			// ICryptoGetTextPassword
+			STDMETHOD(CryptoGetTextPassword)(BSTR* password);
+		};
+	}
 }

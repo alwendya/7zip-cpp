@@ -9,7 +9,7 @@ namespace SevenZip
 	{
 	private:
 
-		typedef UINT32 (WINAPI * CreateObjectFunc)( const GUID* clsID, const GUID* interfaceID, void** outObject );
+		typedef UINT32(WINAPI * CreateObjectFunc)(const GUID* clsID, const GUID* interfaceID, void** outObject);
 
 		HMODULE				m_dll;
 		CreateObjectFunc	m_func;
@@ -20,9 +20,9 @@ namespace SevenZip
 		~SevenZipLibrary();
 
 		bool Load();
-		bool Load( const TString& libraryPath );
+		bool Load(const TString& libraryPath);
 		void Free();
 
-		bool CreateObject( const GUID& clsID, const GUID& interfaceID, void** outObject ) const;
+		bool CreateObject(const GUID& clsID, const GUID& interfaceID, void** outObject) const;
 	};
 }

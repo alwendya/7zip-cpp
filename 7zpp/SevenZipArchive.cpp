@@ -107,13 +107,13 @@ namespace SevenZip
 	bool SevenZipArchive::pri_GetNumberOfItems()
 	{
 		return UsefulFunctions::GetNumberOfItems(m_library, m_archivePath,
-			m_compressionFormat, m_numberofitems, m_password);
+												 m_compressionFormat, m_numberofitems, m_password);
 	}
 
 	bool SevenZipArchive::pri_GetItemsNames()
 	{
 		return UsefulFunctions::GetItemsNames(m_library, m_archivePath, m_compressionFormat,
-			m_numberofitems, m_itemnames, m_origsizes, m_password);
+											  m_numberofitems, m_itemnames, m_origsizes, m_password);
 	}
 }
 

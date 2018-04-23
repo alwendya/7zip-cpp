@@ -14,60 +14,60 @@
 
 namespace SevenZip
 {
-namespace intl
-{
-	class MemExtractCallback : public IArchiveExtractCallback, public ICryptoGetTextPassword
+	namespace intl
 	{
-	private:
+		class MemExtractCallback : public IArchiveExtractCallback, public ICryptoGetTextPassword
+		{
+		private:
 
-		long m_refCount;
+			long m_refCount;
 
-		CComPtr< IInArchive > m_archiveHandler;
-		CComPtr< ISequentialOutStream > m_outMemStream;
-		std::vector<BYTE>& m_buffer;
+			CComPtr< IInArchive > m_archiveHandler;
+			CComPtr< ISequentialOutStream > m_outMemStream;
+			std::vector<BYTE>& m_buffer;
 
-		TString m_archivePath;
-		TString m_password;
+			TString m_archivePath;
+			TString m_password;
 
-		bool m_isDir;
-		bool m_hasNewFileSize;
-		UInt64 m_newFileSize;
-		TString m_filePath;
+			bool m_isDir;
+			bool m_hasNewFileSize;
+			UInt64 m_newFileSize;
+			TString m_filePath;
 
-		ProgressCallback* m_callback;
+			ProgressCallback* m_callback;
 
-	public:
+		public:
 
-		MemExtractCallback(const CComPtr< IInArchive >& archiveHandler, std::vector<BYTE>& buffer, const TString& archivePath, const TString& password, ProgressCallback* callback);
-		virtual ~MemExtractCallback() = default;
+			MemExtractCallback(const CComPtr< IInArchive >& archiveHandler, std::vector<BYTE>& buffer, const TString& archivePath, const TString& password, ProgressCallback* callback);
+			virtual ~MemExtractCallback() = default;
 
-		STDMETHOD(QueryInterface)( REFIID iid, void** ppvObject );
-		STDMETHOD_(ULONG, AddRef)();
-		STDMETHOD_(ULONG, Release)();
+			STDMETHOD(QueryInterface)(REFIID iid, void** ppvObject);
+			STDMETHOD_(ULONG, AddRef)();
+			STDMETHOD_(ULONG, Release)();
 
-		// IProgress
-		STDMETHOD(SetTotal)( UInt64 size );
-		STDMETHOD(SetCompleted)( const UInt64* completeValue );
+			// IProgress
+			STDMETHOD(SetTotal)(UInt64 size);
+			STDMETHOD(SetCompleted)(const UInt64* completeValue);
 
-		// Early exit, this is not part of any interface
-		STDMETHOD(CheckBreak)();
+			// Early exit, this is not part of any interface
+			STDMETHOD(CheckBreak)();
 
-		// IMemExtractCallback
-		STDMETHOD(GetStream)( UInt32 index, ISequentialOutStream** outStream, Int32 askExtractMode );
-		STDMETHOD(PrepareOperation)( Int32 askExtractMode );
-		STDMETHOD(SetOperationResult)( Int32 resultEOperationResult );
+			// IMemExtractCallback
+			STDMETHOD(GetStream)(UInt32 index, ISequentialOutStream** outStream, Int32 askExtractMode);
+			STDMETHOD(PrepareOperation)(Int32 askExtractMode);
+			STDMETHOD(SetOperationResult)(Int32 resultEOperationResult);
 
-		// ICryptoGetTextPassword
-		STDMETHOD(CryptoGetTextPassword)( BSTR* password );
+			// ICryptoGetTextPassword
+			STDMETHOD(CryptoGetTextPassword)(BSTR* password);
 
-	private:
+		private:
 
-		void GetPropertyFilePath( UInt32 index );
-		void GetPropertyIsDir( UInt32 index );
-		void GetPropertySize( UInt32 index );
+			void GetPropertyFilePath(UInt32 index);
+			void GetPropertyIsDir(UInt32 index);
+			void GetPropertySize(UInt32 index);
 
-		void EmitDoneCallback();
-		void EmitFileDoneCallback(const TString& path);
-	};
-}
+			void EmitDoneCallback();
+			void EmitFileDoneCallback(const TString& path);
+		};
+	}
 }

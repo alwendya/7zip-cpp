@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "UsefulFunctions.h"
-#include <vector>
 #include "PropVariant.h"
 
 
@@ -71,12 +70,12 @@ namespace SevenZip
 		const GUID* guid = GetCompressionGUID(format);
 
 		CComPtr< IOutArchive > archive;
-		library.CreateObject(*guid, IID_IOutArchive, reinterpret_cast< void** >(&archive));
+		library.CreateObject(*guid, IID_IOutArchive, reinterpret_cast<void**>(&archive));
 		return archive;
 	}
 
 	bool UsefulFunctions::GetNumberOfItems(const SevenZipLibrary & library, const TString & archivePath,
-		CompressionFormatEnum &format, size_t & numberofitems, const TString& password)
+										   CompressionFormatEnum &format, size_t & numberofitems, const TString& password)
 	{
 		CComPtr< IStream > fileStream = FileSys::OpenFileToRead(archivePath);
 
@@ -116,8 +115,8 @@ namespace SevenZip
 	}
 
 	bool UsefulFunctions::GetItemsNames(const SevenZipLibrary & library, const TString & archivePath,
-		CompressionFormatEnum &format, size_t & numberofitems,
-		std::vector<std::wstring> & itemnames, std::vector<size_t> & origsizes, const TString& password)
+										CompressionFormatEnum &format, size_t & numberofitems,
+										std::vector<std::wstring> & itemnames, std::vector<size_t> & origsizes, const TString& password)
 	{
 		CComPtr< IStream > fileStream = FileSys::OpenFileToRead(archivePath);
 
@@ -160,32 +159,31 @@ namespace SevenZip
 
 		for (UInt32 i = 0; i < numberofitems; i++)
 		{
+			// Get uncompressed size of file
+			CPropVariant prop;
+			hr = archive->GetProperty(i, kpidSize, &prop);
+			if (hr != S_OK)
 			{
-				// Get uncompressed size of file
-				CPropVariant prop;
-				hr = archive->GetProperty(i, kpidSize, &prop);
-				if (hr != S_OK)
-				{
-					return false;
-					//throw SevenZipException( GetCOMErrMsg( _T( "Open archive" ), hr ) );
-				}
+				return false;
+				//throw SevenZipException( GetCOMErrMsg( _T( "Open archive" ), hr ) );
+			}
 
-				int size = prop.intVal;
-				origsizes[i] = size_t(size);
+			int size = prop.intVal;
+			origsizes[i] = size_t(size);
 
-				// Get name of file
-				hr = archive->GetProperty(i, kpidPath, &prop);
-				if (hr != S_OK)
-				{
-					return false;
-					//throw SevenZipException( GetCOMErrMsg( _T( "Open archive" ), hr ) );
-				}
+			// Get name of file
+			hr = archive->GetProperty(i, kpidPath, &prop);
+			if (hr != S_OK)
+			{
+				return false;
+				//throw SevenZipException( GetCOMErrMsg( _T( "Open archive" ), hr ) );
+			}
 
-				//valid string? pass back the found value and call the callback function if set
-				if (prop.vt == VT_BSTR) {
-					std::wstring mypath(prop.bstrVal);
-					itemnames[i] = mypath;
-				}
+			//valid string? pass back the found value and call the callback function if set
+			if (prop.vt == VT_BSTR)
+			{
+				std::wstring mypath(prop.bstrVal);
+				itemnames[i] = mypath;
 			}
 		}
 
