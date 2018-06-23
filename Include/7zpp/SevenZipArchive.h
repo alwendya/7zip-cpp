@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SevenZipLibrary.h"
 #include <atlbase.h>
+#include "SevenZipLibrary.h"
 #include "FileInfo.h"
 #include "CompressionFormat.h"
 #include "CompressionLevel.h"
@@ -11,7 +11,8 @@ namespace SevenZip
 	class SevenZipArchive
 	{
 	public:
-		SevenZipArchive(const SevenZipLibrary& library, const TString& archivePath);
+		SevenZipArchive() {}
+		SevenZipArchive(SevenZipLibrary* library, const TString& archivePath);
 		virtual ~SevenZipArchive();
 
 		virtual bool ReadInArchiveMetadata();
@@ -26,13 +27,16 @@ namespace SevenZip
 
 		virtual size_t GetNumberOfItems();
 		virtual std::vector<std::wstring> GetItemsNames();
-		virtual std::vector<size_t>  GetOrigSizes();
+		virtual std::vector<size_t> GetOrigSizes();
 		virtual void SetPassword(const TString& password) { m_password = password; }
+
+		void SetLibrary(SevenZipLibrary* library) { m_library = library; }
+		void SetArchivePath(const TString& archivePath) { m_archivePath = archivePath; }
 
 	protected:
 		bool m_ReadMetadata = false;
 		bool m_OverrideCompressionFormat = false;
-		const SevenZipLibrary& m_library;
+		SevenZipLibrary* m_library;
 		TString m_archivePath;
 		CompressionFormatEnum m_compressionFormat;
 		CompressionLevelEnum m_compressionLevel;

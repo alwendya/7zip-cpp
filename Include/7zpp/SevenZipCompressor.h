@@ -17,7 +17,8 @@ namespace SevenZip
 	{
 	public:
 		// archive path - full path to creating archive without extension
-		SevenZipCompressor( const SevenZipLibrary& library, const TString& archivePath);
+		SevenZipCompressor() {}
+		SevenZipCompressor(SevenZipLibrary* library, const TString& archivePath);
 		virtual ~SevenZipCompressor() = default;
 
 		// Includes the directory as the root in the archive, e.g. specifying "C:\Temp\MyFolder"
@@ -29,8 +30,8 @@ namespace SevenZip
 
 		// Excludes the last directory as the root in the archive, its contents are at root instead. E.g.
 		// specifying "C:\Temp\MyFolder" make the files in "MyFolder" the root items in the archive.
-		virtual bool AddFiles( const TString& directory, const TString& searchFilter, bool includeSubdirs = true);
-		virtual bool AddAllFiles( const TString& directory, bool includeSubdirs = true);
+		virtual bool AddFiles(const TString& directory, const TString& searchFilter, bool includeSubdirs = true);
+		virtual bool AddAllFiles(const TString& directory, bool includeSubdirs = true);
 
 		// Compress just this memory area as the root item in the archive.
 		virtual bool AddMemory(const TString& filePath, void* memPointer, size_t size);

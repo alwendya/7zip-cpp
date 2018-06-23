@@ -6,19 +6,29 @@
 #include "SevenZipLister.h"
 
 // Version of this library
-#define SEVENZIP_VERSION L"0.3.0.20180422"
-#define SEVENZIP_BRANCH L"master"
+#define SEVENZIP_VERSION "0.3.0-20180422"
+
+#define SEVENZIP_LIBNAME "7zpp"
 
 #ifdef _DEBUG
-	#ifdef _UNICODE
-		#pragma comment ( lib, "7zpp_ud.lib" )
-	#else
-		#pragma comment ( lib, "7zpp_ad.lib" )
-	#endif
+	#define LIBDBG "d"
 #else
-	#ifdef _UNICODE
-		#pragma comment ( lib, "7zpp_u.lib" )
-	#else
-		#pragma comment ( lib, "7zpp_a.lib" )
-	#endif
+#define LIBDBG
+
 #endif
+#ifdef _UNICODE
+	#define CHARSET "u"
+#else
+	#define CHARSET "a"
+#endif
+#ifdef _WIN64
+	#define BITNESS "64"
+#else
+	#define BITNESS "64"
+#endif
+
+#pragma comment ( lib, SEVENZIP_LIBNAME BITNESS CHARSET LIBDBG  ".lib" )
+
+#undef LIBDBG
+#undef CHARSET
+#undef BITNESS
