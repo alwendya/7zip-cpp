@@ -79,17 +79,25 @@ namespace SevenZip
 
 	bool SevenZipWrapper::FindFilesInArchive(const TString &filename, std::vector<int> &indices, bool bUseFullPath, bool bOnlyFirst)
 	{
-		const std::vector<TString>& files = m_extractor.GetItemsNames();
+		const std::vector<std::wstring>& files = m_extractor.GetItemsNames();
+#ifdef _UNICODE
+		const wchar_t* filenameStr = filename.c_str();
+#else
+		wchar_t filenameStr[MAX_PATH];
+		MultiByteToWideChar(_AtlGetConversionACP(), 0, filename.c_str(), (int)filename.length() + 1, filenameStr, MAX_PATH);
+#endif
+
 		int indice = 0;
 		for (const auto& file : files)
 		{
-			int add = _tcsicmp(filename.c_str(), file.c_str());
+			int add = _wcsicmp(filenameStr, file.c_str());
 			if (add != 0 && !bUseFullPath)
 			{
 				size_t pos = file.rfind('\\');
 				if (pos != std::string::npos)
 				{
-					add = _tcsicmp(filename.c_str(), file.c_str() + ++pos);
+					++pos;
+					add = _wcsicmp(filenameStr, file.c_str() + pos);
 				}
 			}
 
