@@ -5,7 +5,7 @@
 
 namespace SevenZip
 {
-	SevenZipArchive::SevenZipArchive(const SevenZipLibrary& library, const TString& archivePath)
+	SevenZipArchive::SevenZipArchive(SevenZipLibrary* library, const TString& archivePath)
 		: m_library(library),
 		m_archivePath(archivePath),
 		// The default compression type will be 7z
@@ -101,18 +101,18 @@ namespace SevenZip
 	bool SevenZipArchive::pri_DetectCompressionFormat(CompressionFormatEnum & format)
 	{
 		m_OverrideCompressionFormat = false;
-		return UsefulFunctions::DetectCompressionFormat(m_library, m_archivePath, format, m_password);
+		return UsefulFunctions::DetectCompressionFormat(*m_library, m_archivePath, format, m_password);
 	}
 
 	bool SevenZipArchive::pri_GetNumberOfItems()
 	{
-		return UsefulFunctions::GetNumberOfItems(m_library, m_archivePath,
+		return UsefulFunctions::GetNumberOfItems(*m_library, m_archivePath,
 												 m_compressionFormat, m_numberofitems, m_password);
 	}
 
 	bool SevenZipArchive::pri_GetItemsNames()
 	{
-		return UsefulFunctions::GetItemsNames(m_library, m_archivePath, m_compressionFormat,
+		return UsefulFunctions::GetItemsNames(*m_library, m_archivePath, m_compressionFormat,
 											  m_numberofitems, m_itemnames, m_origsizes, m_password);
 	}
 }

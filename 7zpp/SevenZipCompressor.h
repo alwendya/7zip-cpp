@@ -17,7 +17,8 @@ namespace SevenZip
 	{
 	public:
 		// archive path - full path to creating archive without extension
-		SevenZipCompressor(const SevenZipLibrary& library, const TString& archivePath);
+		SevenZipCompressor() {}
+		SevenZipCompressor(SevenZipLibrary* library, const TString& archivePath);
 		virtual ~SevenZipCompressor() = default;
 
 		// Includes the directory as the root in the archive, e.g. specifying "C:\Temp\MyFolder"

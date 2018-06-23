@@ -14,7 +14,7 @@ namespace SevenZip
 
 	using namespace intl;
 
-	SevenZipExtractor::SevenZipExtractor(const SevenZipLibrary& library, const TString& archivePath)
+	SevenZipExtractor::SevenZipExtractor(SevenZipLibrary* library, const TString& archivePath)
 		: SevenZipArchive(library, archivePath)
 	{
 	}
@@ -58,7 +58,7 @@ namespace SevenZip
 			return false;	//Could not open archive
 		}
 
-		CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(m_library, m_compressionFormat);
+		CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(*m_library, m_compressionFormat);
 		CComPtr< InStreamWrapper > inFile = new InStreamWrapper(archiveStream);
 		CComPtr< ArchiveOpenCallback > openCallback = new ArchiveOpenCallback(m_password);
 
@@ -96,7 +96,7 @@ namespace SevenZip
 													const TString& destDirectory,
 													ProgressCallback* callback)
 	{
-		CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(m_library, m_compressionFormat);
+		CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(*m_library, m_compressionFormat);
 		CComPtr< InStreamWrapper > inFile = new InStreamWrapper(archiveStream);
 		CComPtr< ArchiveOpenCallback > openCallback = new ArchiveOpenCallback(m_password);
 

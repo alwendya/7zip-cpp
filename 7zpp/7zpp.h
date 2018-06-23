@@ -12,6 +12,9 @@
 
 #ifdef _DEBUG
 	#define LIBDBG "d"
+#else
+#define LIBDBG
+
 #endif
 #ifdef _UNICODE
 	#define CHARSET "u"

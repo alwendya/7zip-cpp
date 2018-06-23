@@ -13,10 +13,12 @@ namespace SevenZip
 	public:
 		TString m_archivePath;
 
-		SevenZipLister(const SevenZipLibrary& library, const TString& archivePath);
+		SevenZipLister() {}
+		SevenZipLister(SevenZipLibrary* library, const TString& archivePath);
 		virtual ~SevenZipLister();
 
 		virtual bool ListArchive(const TString& password, ListCallback* callback = nullptr);
+
 
 	private:
 		bool ListArchive(const CComPtr< IStream >& archiveStream, const TString& password, ListCallback* callback);

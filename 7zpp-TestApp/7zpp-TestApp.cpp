@@ -1,4 +1,4 @@
-// 7zpp-TestApp.cpp : Defines the entry point for the console application.
+﻿// 7zpp-TestApp.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -9,6 +9,7 @@
 
 //  Wrapper
 #include "../7zpp/7zpp.h"
+#include "../7zpp/SevenZipWrapper.h"
 
 #define DLL_PATH SOLUTIONDIR L"Exe\\x64\\7z.dll"
 #define TEMPDIR SOLUTIONDIR L"Exe\\x64\\tmp"
@@ -77,7 +78,7 @@ TEST(List, ListFiles_Test1)
 	//
 	ListCallBackOutput myListCallBack;
 
-	SevenZip::SevenZipLister lister(lib, myArchive);
+	SevenZip::SevenZipLister lister(&lib, myArchive);
 	lister.SetCompressionFormat(SevenZip::CompressionFormat::Zip);
 	result = lister.ListArchive(_T(""), (SevenZip::ListCallback *)&myListCallBack);
 
@@ -126,7 +127,7 @@ TEST(Extract, ExtractFiles_Test1)
 	//
 	// Extract
 	//
-	SevenZip::SevenZipExtractor extractor(lib, myArchive);
+	SevenZip::SevenZipExtractor extractor(&lib, myArchive);
 
 	//
 	// Try to detect compression format, num of items, and names
@@ -237,7 +238,7 @@ TEST(Extract, ExtractFiles_Test2)
 	//
 	// Extract
 	//
-	SevenZip::SevenZipExtractor extractor(lib, myArchive);
+	SevenZip::SevenZipExtractor extractor(&lib, myArchive);
 
 	//
 	// Try to detect compression format, num of items, and names
@@ -316,7 +317,7 @@ TEST(Extract, ExtractFiles_Test3)
 	//
 	// Extract
 	//
-	SevenZip::SevenZipExtractor extractor(lib, myArchive);
+	SevenZip::SevenZipExtractor extractor(&lib, myArchive);
 
 	//
 	// Try to detect compression format, num of items, and names
@@ -354,7 +355,7 @@ TEST(Extract, ExtractFiles_Test4)
 	//
 	// Extract
 	//
-	SevenZip::SevenZipExtractor extractor(lib, myArchive);
+	SevenZip::SevenZipExtractor extractor(&lib, myArchive);
 
 	//
 	// Try to detect compression format, num of items, and names
@@ -372,8 +373,8 @@ TEST(Extract, ExtractFiles_Test4)
 
 	size_t numberofitems = extractor.GetNumberOfItems();
 
-	// Should have found 1,215 files
-	EXPECT_EQ(1215, numberofitems);
+	// Should have found 1217 files
+	EXPECT_EQ(1217, numberofitems);
 
 	std::vector<std::wstring> itemnames = extractor.GetItemsNames();
 	std::vector<size_t> origsizes = extractor.GetOrigSizes();
@@ -381,6 +382,9 @@ TEST(Extract, ExtractFiles_Test4)
 	// Set up first few expected names and sizes
 	std::vector<std::wstring> expecteditemnames;
 	std::vector<size_t> expectedorigsizes;
+
+	expecteditemnames.push_back(std::wstring(L"7z"));
+	expectedorigsizes.push_back(0);
 
 	expecteditemnames.push_back(std::wstring(L"7z\\.git"));
 	expectedorigsizes.push_back(27);
@@ -412,6 +416,7 @@ TEST(Extract, ExtractFiles_Test4)
 
 	EXPECT_EQ(true, result);
 
+	expecteditemnames.erase(expecteditemnames.begin());
 	//
 	// Look for the first few actual files
 	//
@@ -466,7 +471,7 @@ TEST(Extract, ExtractFiles_Test5)
 	//
 	ListCallBackOutput myListCallBack;
 
-	SevenZip::SevenZipLister lister(lib, myArchive);
+	SevenZip::SevenZipLister lister(&lib, myArchive);
 	SevenZip::CompressionFormatEnum myCompressionFormat = lister.GetCompressionFormat();
 	EXPECT_EQ(SevenZip::CompressionFormat::Zip, myCompressionFormat);
 
@@ -478,9 +483,9 @@ TEST(Extract, ExtractFiles_Test5)
 	//
 	// Extract
 	//
-	SevenZip::SevenZipExtractor extractor(lib, myArchive);
+	SevenZip::SevenZipExtractor extractor(&lib, myArchive);
 	extractor.SetCompressionFormat(myCompressionFormat);
-	UINT indces[2] = { 1, 4 };
+	UINT indces[2] = { 2, 5 };
 	result = extractor.ExtractFilesFromArchive(indces, 2, myDest);
 	ASSERT_EQ(true, result);
 
@@ -512,10 +517,41 @@ TEST(Extract, ExtractFiles_Test5)
 	}
 
 	std::vector<BYTE> memBuffer;
-	result = extractor.ExtractFileToMemory(4, memBuffer);
+	result = extractor.ExtractFileToMemory(5, memBuffer);
 	ASSERT_EQ(true, result);
 
 	EXPECT_EQ(1466, memBuffer.size());
+}
+
+//
+// Test extraction - Test 6
+//
+TEST(Extract, ExtractFiles_Test6)
+{
+	// Get rid of our temp directory
+	boost::filesystem::remove_all(TEMPDIR);
+	boost::filesystem::create_directory(TEMPDIR);
+	SevenZip::TString myDest(TEMPDIR);
+
+	SevenZip::SevenZipWrapper wrapper(SevenZip::TString(DLL_PATH));
+
+	bool result = wrapper.OpenArchive(std::wstring(TESTEXTRACTTESTFILE4));
+	ASSERT_EQ(true, result);
+
+	auto compFormat = wrapper.GetCompressionFormat();
+	EXPECT_EQ(SevenZip::CompressionFormat::Zip, compFormat);
+
+	//
+	// Extract
+	//
+	result = wrapper.ExtractFile(_T(".gitignore"), myDest);
+	ASSERT_EQ(true, result);
+
+	std::vector<BYTE> memBuffer;
+	result = wrapper.ExtractFileToMemory(_T("readme.txt"), memBuffer);
+	ASSERT_EQ(true, result);
+
+	EXPECT_EQ(5316, memBuffer.size());
 }
 
 //
@@ -538,7 +574,7 @@ TEST(Compress, CompressFiles_Test1)
 	boost::filesystem::remove_all(TEMPDIR);
 	boost::filesystem::create_directory(TEMPDIR);
 
-	SevenZip::SevenZipCompressor compressor(lib, myArchive);
+	SevenZip::SevenZipCompressor compressor(&lib, myArchive);
 	compressor.SetCompressionFormat(SevenZip::CompressionFormat::Zip);
 	compressor.SetPassword(_T("test"));
 	bool addResult = compressor.AddFile(TESTCOMPRESSTESTFILE1);
@@ -572,7 +608,7 @@ TEST(Compress, CompressFiles_Test2)
 	SevenZip::TString myArchive(ARCHIVE_NAME1);
 	SevenZip::TString myDest(TEMPDIR);
 
-	SevenZip::SevenZipCompressor compressor(lib, myArchive);
+	SevenZip::SevenZipCompressor compressor(&lib, myArchive);
 	compressor.SetCompressionFormat(SevenZip::CompressionFormat::SevenZip);
 	bool addResult = compressor.AddFile(TESTCOMPRESSTESTFILE1);
 	EXPECT_EQ(addResult, true);
@@ -601,7 +637,7 @@ TEST(Compress, CompressFiles_Test3)
 	boost::filesystem::remove_all(TEMPDIR);
 	boost::filesystem::create_directory(TEMPDIR);
 
-	SevenZip::SevenZipCompressor compressor(lib, myArchive);
+	SevenZip::SevenZipCompressor compressor(&lib, myArchive);
 	compressor.SetCompressionFormat(SevenZip::CompressionFormat::SevenZip);
 
 	std::string str = "Just a string in a memory";

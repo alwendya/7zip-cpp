@@ -17,7 +17,7 @@ namespace SevenZip
 
 	const TString SearchPatternAllFiles = _T("*");
 
-	SevenZipCompressor::SevenZipCompressor(const SevenZipLibrary& library, const TString& archivePath)
+	SevenZipCompressor::SevenZipCompressor(SevenZipLibrary* library, const TString& archivePath)
 		: SevenZipArchive(library, archivePath)
 		, m_absolutePath(false)
 	{
@@ -81,7 +81,7 @@ namespace SevenZip
 			return false;
 		}
 
-		CComPtr< IOutArchive > archiver = UsefulFunctions::GetArchiveWriter(m_library, m_compressionFormat);
+		CComPtr< IOutArchive > archiver = UsefulFunctions::GetArchiveWriter(*m_library, m_compressionFormat);
 		if (!archiver)
 		{
 			// compression not supported

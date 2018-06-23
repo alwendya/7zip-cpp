@@ -14,7 +14,7 @@ namespace SevenZip
 
 	using namespace intl;
 
-	SevenZipLister::SevenZipLister(const SevenZipLibrary& library, const TString& archivePath)
+	SevenZipLister::SevenZipLister(SevenZipLibrary* library, const TString& archivePath)
 		: SevenZipArchive(library, archivePath),
 		m_archivePath(archivePath)
 	{
@@ -38,7 +38,7 @@ namespace SevenZip
 
 	bool SevenZipLister::ListArchive(const CComPtr< IStream >& archiveStream, const TString& password, ListCallback* callback)
 	{
-		CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(m_library, m_compressionFormat);
+		CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(*m_library, m_compressionFormat);
 		CComPtr< InStreamWrapper > inFile = new InStreamWrapper(archiveStream);
 		CComPtr< ArchiveOpenCallback > openCallback = new ArchiveOpenCallback(password);
 
