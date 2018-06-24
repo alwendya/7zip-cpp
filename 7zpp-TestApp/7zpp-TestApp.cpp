@@ -538,17 +538,17 @@ TEST(Extract, ExtractFiles_Test6)
 	bool result = wrapper.OpenArchive(std::wstring(TESTEXTRACTTESTFILE4));
 	ASSERT_EQ(true, result);
 
-	auto compFormat = wrapper.GetCompressionFormat();
+	auto compFormat = wrapper.GetExtractor().GetCompressionFormat();
 	EXPECT_EQ(SevenZip::CompressionFormat::Zip, compFormat);
 
 	//
 	// Extract
 	//
-	result = wrapper.ExtractFile(_T(".gitignore"), myDest);
+	result = wrapper.GetExtractor().ExtractFile(_T(".gitignore"), myDest);
 	ASSERT_EQ(true, result);
 
 	std::vector<BYTE> memBuffer;
-	result = wrapper.ExtractFileToMemory(_T("readme.txt"), memBuffer);
+	result = wrapper.GetExtractor().ExtractFileToMemory(_T("readme.txt"), memBuffer);
 	ASSERT_EQ(true, result);
 
 	EXPECT_EQ(5316, memBuffer.size());
@@ -562,32 +562,25 @@ TEST(Compress, CompressFiles_Test1)
 	//
 	// Add single file, files by mask and files by mask recursive to ZIP
 	//
-	SevenZip::SevenZipLibrary lib;
-	bool result = lib.Load(SevenZip::TString(DLL_PATH));
-
-	// Make sure DLL loads
-	ASSERT_EQ(true, result);
-
-	SevenZip::TString myArchive(ARCHIVE_NAME1);
-	SevenZip::TString myDest(TEMPDIR);
-
 	boost::filesystem::remove_all(TEMPDIR);
 	boost::filesystem::create_directory(TEMPDIR);
 
-	SevenZip::SevenZipCompressor compressor(&lib, myArchive);
-	compressor.SetCompressionFormat(SevenZip::CompressionFormat::Zip);
-	compressor.SetPassword(_T("test"));
-	bool addResult = compressor.AddFile(TESTCOMPRESSTESTFILE1);
-	EXPECT_EQ(addResult, true);
+	SevenZip::SevenZipWrapper compressor;
+	bool result = compressor.SetLibPath(DLL_PATH);
+	EXPECT_EQ(result, true);
+
+	compressor.GetCompressor().SetCompressionFormat(SevenZip::CompressionFormat::Zip);
+	result = compressor.GetCompressor().AddFile(TESTCOMPRESSTESTFILE1);
+	EXPECT_EQ(result, true);
 
 	// add files by mask non recursive in folder where no files with this mask
-	addResult = compressor.AddFiles(TESTCOMPRESSTESTFILE2, _T("*.cpp"), false);
-	EXPECT_EQ(addResult, false);
+	result = compressor.GetCompressor().AddFiles(TESTCOMPRESSTESTFILE2, _T("*.cpp"), false);
+	EXPECT_EQ(result, false);
 
-	addResult = compressor.AddFiles(TESTCOMPRESSTESTFILE2, _T("*.cpp"), true);
-	EXPECT_EQ(addResult, true);
+	result = compressor.GetCompressor().AddFiles(TESTCOMPRESSTESTFILE2, _T("*.cpp"), true);
+	EXPECT_EQ(result, true);
 
-	bool compressResult = compressor.DoCompress();
+	bool compressResult = compressor.CreateArchive(ARCHIVE_NAME1, _T("test"));
 	EXPECT_EQ(compressResult, true);
 }
 
@@ -596,26 +589,21 @@ TEST(Compress, CompressFiles_Test2)
 	//
 	// Add subdir, recursive, to 7z
 	//
-	SevenZip::SevenZipLibrary lib;
-	bool result = lib.Load(SevenZip::TString(DLL_PATH));
-
-	// Make sure DLL loads
-	ASSERT_EQ(true, result);
 
 	boost::filesystem::remove_all(TEMPDIR);
 	boost::filesystem::create_directory(TEMPDIR);
 
-	SevenZip::TString myArchive(ARCHIVE_NAME1);
-	SevenZip::TString myDest(TEMPDIR);
+	SevenZip::SevenZipWrapper compressor;
+	bool result = compressor.SetLibPath(DLL_PATH);
+	EXPECT_EQ(result, true);
 
-	SevenZip::SevenZipCompressor compressor(&lib, myArchive);
-	compressor.SetCompressionFormat(SevenZip::CompressionFormat::SevenZip);
-	bool addResult = compressor.AddFile(TESTCOMPRESSTESTFILE1);
+	compressor.GetCompressor().SetCompressionFormat(SevenZip::CompressionFormat::SevenZip);
+	bool addResult = compressor.GetCompressor().AddFile(TESTCOMPRESSTESTFILE1);
 	EXPECT_EQ(addResult, true);
-	bool addDirResult = compressor.AddDirectory(TESTCOMPRESSTESTFILE2, true);
+	bool addDirResult = compressor.GetCompressor().AddDirectory(TESTCOMPRESSTESTFILE2, true);
 	EXPECT_EQ(addDirResult, true);
 
-	bool compressResult = compressor.DoCompress();
+	bool compressResult = compressor.CreateArchive(ARCHIVE_NAME1);
 	EXPECT_EQ(compressResult, true);
 }
 
@@ -631,13 +619,10 @@ TEST(Compress, CompressFiles_Test3)
 	// Make sure DLL loads
 	ASSERT_EQ(true, result);
 
-	SevenZip::TString myArchive(ARCHIVE_NAME2);
-	SevenZip::TString myDest(TEMPDIR);
-
 	boost::filesystem::remove_all(TEMPDIR);
 	boost::filesystem::create_directory(TEMPDIR);
 
-	SevenZip::SevenZipCompressor compressor(&lib, myArchive);
+	SevenZip::SevenZipCompressor compressor(&lib, ARCHIVE_NAME2);
 	compressor.SetCompressionFormat(SevenZip::CompressionFormat::SevenZip);
 
 	std::string str = "Just a string in a memory";

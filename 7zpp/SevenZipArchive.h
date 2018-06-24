@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <atlbase.h>
 #include "SevenZipLibrary.h"
@@ -36,7 +36,7 @@ namespace SevenZip
 	protected:
 		bool m_ReadMetadata = false;
 		bool m_OverrideCompressionFormat = false;
-		SevenZipLibrary* m_library;
+		SevenZipLibrary* m_library = nullptr;
 		TString m_archivePath;
 		CompressionFormatEnum m_compressionFormat;
 		CompressionLevelEnum m_compressionLevel;

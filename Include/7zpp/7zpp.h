@@ -24,7 +24,7 @@
 #ifdef _WIN64
 	#define BITNESS "64"
 #else
-	#define BITNESS "64"
+	#define BITNESS "32"
 #endif
 
 #pragma comment ( lib, SEVENZIP_LIBNAME BITNESS CHARSET LIBDBG  ".lib" )

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "SevenZipCompressor.h"
 #include "GUIDs.h"
 #include "FileSys.h"
@@ -19,7 +19,6 @@ namespace SevenZip
 
 	SevenZipCompressor::SevenZipCompressor(SevenZipLibrary* library, const TString& archivePath)
 		: SevenZipArchive(library, archivePath)
-		, m_absolutePath(false)
 	{
 	}
 

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "SevenZipExtractor.h"
 #include "GUIDs.h"
 #include "FileSys.h"
@@ -125,4 +125,56 @@ namespace SevenZip
 		return true;
 	}
 
+	bool SevenZipExtractor::ExtractFile(const TString& filename, const TString& path, bool bUseFullPath /*= false*/)
+	{
+		std::vector<int> indices;
+		if (!FindFilesInArchive(filename, indices, bUseFullPath, true)) return false;
+
+		return ExtractFilesFromArchive((unsigned int*)indices.data(), (unsigned int)indices.size(), path);
+	}
+
+	bool SevenZipExtractor::ExtractFileToMemory(const TString& filename, std::vector<BYTE>& memBuffer, bool bUseFullPath /*= false*/)
+	{
+		std::vector<int> indices;
+		if (!FindFilesInArchive(filename, indices, bUseFullPath, true)) return false;
+
+		// only first found file to extract
+		return ExtractFileToMemory(indices[0], memBuffer);
+	}
+
+	bool SevenZipExtractor::FindFilesInArchive(const TString &filename, std::vector<int> &indices, bool bUseFullPath, bool bOnlyFirst)
+	{
+		const std::vector<std::wstring>& files = GetItemsNames();
+#ifdef _UNICODE
+		const wchar_t* filenameStr = filename.c_str();
+#else
+		wchar_t filenameStr[MAX_PATH];
+		MultiByteToWideChar(_AtlGetConversionACP(), 0, filename.c_str(), (int)filename.length() + 1, filenameStr, MAX_PATH);
+#endif
+
+		int indice = 0;
+		for (const auto& file : files)
+		{
+			int add = _wcsicmp(filenameStr, file.c_str());
+			if (add != 0 && !bUseFullPath)
+			{
+				size_t pos = file.rfind('\\');
+				if (pos != std::string::npos)
+				{
+					++pos;
+					add = _wcsicmp(filenameStr, file.c_str() + pos);
+				}
+			}
+
+			if (add == 0)
+			{
+				indices.push_back(indice);
+				if (bOnlyFirst) break;
+			}
+
+			indice++;
+		}
+
+		return !indices.empty();
+	}
 }

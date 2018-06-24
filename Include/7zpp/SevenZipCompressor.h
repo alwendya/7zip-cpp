@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #include <vector>
@@ -42,10 +42,11 @@ namespace SevenZip
 		void ClearList() { m_fileList.clear(); }
 		void UseAbsolutePaths(bool absolute) { m_absolutePath = absolute; }
 		bool CheckValidFormat() const;
+		bool IsListEmpty() { return m_fileList.empty(); }
 
 	private:
 		std::vector< intl::FilePathInfo > m_fileList; // list of files to compress
-		bool m_absolutePath;
+		bool m_absolutePath = false;
 		CComPtr< IStream > OpenArchiveStream() const;
 		bool AddFilesToList(const TString& directory, const TString& searchPattern, const TString& pathPrefix, bool recursion);
 		bool SetCompressionProperties(IUnknown* outArchive) const;
