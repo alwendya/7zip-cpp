@@ -90,7 +90,10 @@ namespace SevenZip
 		SetCompressionProperties(archiver);
 
 		//Set full outputFilePath including ending
-		m_archivePath += UsefulFunctions::EndingFromCompressionFormat(m_compressionFormat);
+		if(m_archivePath.rfind('.') == TString::npos)
+		{
+			m_archivePath += UsefulFunctions::EndingFromCompressionFormat(m_compressionFormat);
+		}
 
 		CComPtr< OutStreamWrapper > outFile = new OutStreamWrapper(OpenArchiveStream());
 		CComPtr< ArchiveUpdateCallback > updateCallback = new ArchiveUpdateCallback(m_fileList, m_archivePath, m_password, callback);
