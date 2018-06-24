@@ -42,6 +42,7 @@ namespace SevenZip
 		FilePathInfo memFile;
 		memFile.rootPath = FileSys::GetPath(filePath);
 		memFile.FileName = FileSys::GetFileName(filePath);
+		memFile.FilePath = filePath;
 		memFile.memFile = true;
 		memFile.memPointer = memPointer;
 		memFile.Size = size;
