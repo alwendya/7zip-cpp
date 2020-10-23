@@ -21,14 +21,20 @@
 #else
 	#define CHARSET "a"
 #endif
+#ifdef _AFXDLL
+#define STATIC ""
+#else
+#define STATIC "s"
+#endif
 #ifdef _WIN64
 	#define BITNESS "64"
 #else
 	#define BITNESS "32"
 #endif
 
-#pragma comment ( lib, SEVENZIP_LIBNAME BITNESS CHARSET LIBDBG  ".lib" )
+#pragma comment ( lib, SEVENZIP_LIBNAME BITNESS CHARSET STATIC LIBDBG  ".lib" )
 
 #undef LIBDBG
 #undef CHARSET
+#undef STATIC
 #undef BITNESS
