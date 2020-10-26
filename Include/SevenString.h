@@ -1,1 +1,0 @@
-D:/Works/OpenSource/GitHub/7zip-cpp/7zpp/SevenString.h

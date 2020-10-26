@@ -24,6 +24,7 @@ Lib/
 Exe/
 Intermediate/
 dll/
+export/
 **/x64/
 
 # Misc
