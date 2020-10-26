@@ -363,6 +363,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="7zpp.h" />
+    <ClInclude Include="7zpp_autolink.h" />
     <ClInclude Include="ArchiveExtractCallback.h" />
     <ClInclude Include="ArchiveOpenCallback.h" />
     <ClInclude Include="ArchiveUpdateCallback.h" />

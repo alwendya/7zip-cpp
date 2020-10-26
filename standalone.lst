@@ -1,4 +1,5 @@
 7zpp.h
+7zpp_autolink.h
 CompressionFormat.h
 CompressionLevel.h
 Enum.h
