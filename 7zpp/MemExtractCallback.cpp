@@ -19,7 +19,7 @@ namespace SevenZip
 											   std::vector<BYTE>& buffer,
 											   const TString& archivePath,
 											   const TString& password,
-											   ProgressCallback* callback)
+											   IProgressCallback* callback)
 			: m_refCount(0)
 			, m_archiveHandler(archiveHandler)
 			, m_buffer(buffer)
