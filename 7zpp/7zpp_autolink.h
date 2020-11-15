@@ -1,7 +1,7 @@
 #pragma once
 
 // Version of this library
-#define SEVENZIP_VERSION "0.3.0-20180422"
+#define SEVENZIP_VERSION "0.3.0-20201115"
 
 #define SEVENZIP_LIBNAME "7zpp"
 
