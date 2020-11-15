@@ -54,128 +54,128 @@
 
 namespace SevenZip
 {
-	namespace intl
+namespace intl
+{
+template < typename TEnum, class DerivedDef >
+struct EnumerationDefinition
+{
+	struct StringValue
 	{
-		template < typename TEnum, class DerivedDef >
-		struct EnumerationDefinition
+		TEnum		 value;
+		const TCHAR* string = nullptr;
+	};
+
+	static TEnum Parse(const TString& string, const TEnum defaultValue)
+	{
+		for (const auto& it = DerivedDef::Strings; it->string != nullptr; ++it)
 		{
-			struct StringValue
+			if (string.Compare(it->string) == 0)
 			{
-				TEnum		 value;
-				const TCHAR* string;
-			};
-
-			static TEnum Parse(const TString& string, const TEnum defaultValue)
-			{
-				for (const auto it = DerivedDef::Strings; it->string != nullptr; ++it)
-				{
-					if (string.Compare(it->string) == 0)
-					{
-						return it->value;
-					}
-				}
-				return defaultValue;
+				return it->value;
 			}
-
-			static TString Format(const TEnum& value)
-			{
-				for (const auto it = DerivedDef::Strings; it->string != nullptr; ++it)
-				{
-					if (value == it->value)
-					{
-						return it->string;
-					}
-				}
-				return TString();
-			}
-		};
-
-
-		struct EnumerationDefinitionNoStrings {};
-
-
-		template < typename TEnum, class TEnumClass, TEnum DefaultValue >
-		class EnumerationValue
-		{
-		private:
-
-			using ThisClass = typename EnumerationValue< TEnum, TEnumClass, DefaultValue >;
-
-			TEnum m_value;
-
-		public:
-
-			using Enum = typename TEnum;
-
-			EnumerationValue() :
-				m_value(DefaultValue)
-			{
-			}
-
-			EnumerationValue(const TEnum& value) : m_value(value) {}
-
-			static ThisClass Parse(const TString& string)
-			{
-				return ThisClass(TEnumClass::Parse(string, DefaultValue));
-			}
-
-			const TEnum& GetValue() const { return m_value; }
-
-			TString GetString() const { return TEnumClass::Format(m_value); }
-
-			operator TEnum() const { return m_value; }
-
-			ThisClass& operator=(const TEnum& value)
-			{
-				m_value = value;
-				return *this;
-			}
-
-			bool operator==(const ThisClass& that) const
-			{
-				return that.m_value == m_value;
-			}
-
-			bool operator!=(const ThisClass& that) const
-			{
-				return !operator==(that);
-			}
-
-			bool operator==(const TEnum& value) const
-			{
-				return value == m_value;
-			}
-
-			bool operator!=(const TEnum& value) const
-			{
-				return !operator==(value);
-			}
-
-			bool operator< (const ThisClass& that) const
-			{
-				return m_value < that.m_value;
-			}
-
-			// Bit field members
-			void AddFlag(const TEnum& value)
-			{
-				*reinterpret_cast<int*>(&m_value) |= static_cast<int>(value);
-			}
-
-			void RemoveFlag(const TEnum& value)
-			{
-				*reinterpret_cast<int*>(&m_value) &= ~static_cast<int>(value);
-			}
-
-			bool HasFlag(const TEnum& value) const
-			{
-				return (m_value & value) == value;
-			}
-
-			bool HasAnyFlag(const TEnum& valueCombo) const
-			{
-				return (m_value & valueCombo) != 0;
-			}
-		};
+		}
+		return defaultValue;
 	}
+
+	static TString Format(const TEnum& value)
+	{
+		for (const auto& it = DerivedDef::Strings; it->string != nullptr; ++it)
+		{
+			if (value == it->value)
+			{
+				return it->string;
+			}
+		}
+		return TString();
+	}
+};
+
+
+struct EnumerationDefinitionNoStrings {};
+
+
+template < typename TEnum, class TEnumClass, TEnum DefaultValue >
+class EnumerationValue
+{
+private:
+
+	using ThisClass = typename EnumerationValue< TEnum, TEnumClass, DefaultValue >;
+
+	TEnum m_value;
+
+public:
+
+	using Enum = typename TEnum;
+
+	EnumerationValue() :
+		m_value(DefaultValue)
+	{
+	}
+
+	EnumerationValue(const TEnum& value) : m_value(value) {}
+
+	static ThisClass Parse(const TString& string)
+	{
+		return ThisClass(TEnumClass::Parse(string, DefaultValue));
+	}
+
+	const TEnum& GetValue() const { return m_value; }
+
+	TString GetString() const { return TEnumClass::Format(m_value); }
+
+	operator TEnum() const { return m_value; }
+
+	ThisClass& operator=(const TEnum& value)
+	{
+		m_value = value;
+		return *this;
+	}
+
+	bool operator==(const ThisClass& that) const
+	{
+		return that.m_value == m_value;
+	}
+
+	bool operator!=(const ThisClass& that) const
+	{
+		return !operator==(that);
+	}
+
+	bool operator==(const TEnum& value) const
+	{
+		return value == m_value;
+	}
+
+	bool operator!=(const TEnum& value) const
+	{
+		return !operator==(value);
+	}
+
+	bool operator< (const ThisClass& that) const
+	{
+		return m_value < that.m_value;
+	}
+
+	// Bit field members
+	void AddFlag(const TEnum& value)
+	{
+		*reinterpret_cast<int*>(&m_value) |= static_cast<int>(value);
+	}
+
+	void RemoveFlag(const TEnum& value)
+	{
+		*reinterpret_cast<int*>(&m_value) &= ~static_cast<int>(value);
+	}
+
+	bool HasFlag(const TEnum& value) const
+	{
+		return (m_value & value) == value;
+	}
+
+	bool HasAnyFlag(const TEnum& valueCombo) const
+	{
+		return (m_value & valueCombo) != 0;
+	}
+};
+}
 }

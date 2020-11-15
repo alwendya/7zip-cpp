@@ -2,27 +2,28 @@
 
 
 #include <exception>
+#include <tchar.h>
 #include "SevenString.h"
 
 
 namespace SevenZip
 {
-	TString StrFmt(const TCHAR* format, ...);
-	TString GetWinErrMsg(const TString& contextMessage, DWORD lastError);
-	TString GetCOMErrMsg(const TString& contextMessage, HRESULT lastError);
+TString StrFmt(const TCHAR* format, ...);
+TString GetWinErrMsg(const TString& contextMessage, DWORD lastError);
+TString GetCOMErrMsg(const TString& contextMessage, HRESULT lastError);
 
-	class SevenZipException
-	{
-	protected:
+class SevenZipException
+{
+protected:
 
-		TString m_message;
+	TString m_message;
 
-	public:
+public:
 
-		SevenZipException() = default;
-		SevenZipException(const TString& message);
-		virtual ~SevenZipException() = default;
+	SevenZipException() = default;
+	SevenZipException(const TString& message);
+	virtual ~SevenZipException() = default;
 
-		const TString& GetMessage() const { return m_message; }
-	};
+	const TString& GetMessage() const { return m_message; }
+};
 }

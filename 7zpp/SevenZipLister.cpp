@@ -12,96 +12,96 @@
 namespace SevenZip
 {
 
-	using namespace intl;
+using namespace intl;
 
-	SevenZipLister::SevenZipLister(SevenZipLibrary* library, const TString& archivePath)
-		: SevenZipArchive(library, archivePath),
-		m_archivePath(archivePath)
+SevenZipLister::SevenZipLister(SevenZipLibrary* library, const TString& archivePath)
+	: SevenZipArchive(library, archivePath)
+	, m_archivePath(archivePath)
+{
+}
+
+bool SevenZipLister::ListArchive(const TString& password, ListCallback* callback /*= nullptr*/)
+{
+	CComPtr< IStream > fileStream = FileSys::OpenFileToRead(m_archivePath);
+	if (fileStream == nullptr)
 	{
+		return false;
 	}
 
-	bool SevenZipLister::ListArchive(const TString& password, ListCallback* callback /*= nullptr*/)
-	{
-		CComPtr< IStream > fileStream = FileSys::OpenFileToRead(m_archivePath);
-		if (fileStream == nullptr)
-		{
-			return false;
-		}
+	return ListArchive(fileStream, password, callback);
+}
 
-		return ListArchive(fileStream, password, callback);
+bool SevenZipLister::ListArchive(const CComPtr< IStream >& archiveStream, const TString& password, ListCallback* callback)
+{
+	CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(*m_library, m_compressionFormat);
+	CComPtr< InStreamWrapper > inFile = new InStreamWrapper(archiveStream);
+	CComPtr< ArchiveOpenCallback > openCallback = new ArchiveOpenCallback(password);
+
+	HRESULT hr = archive->Open(inFile, nullptr, openCallback);
+	if (hr != S_OK)
+	{
+		return false;
 	}
 
-	bool SevenZipLister::ListArchive(const CComPtr< IStream >& archiveStream, const TString& password, ListCallback* callback)
+	// List command
+	UInt32 numItems = 0;
+	archive->GetNumberOfItems(&numItems);
+	for (UInt32 i = 0; i < numItems; i++)
 	{
-		CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(*m_library, m_compressionFormat);
-		CComPtr< InStreamWrapper > inFile = new InStreamWrapper(archiveStream);
-		CComPtr< ArchiveOpenCallback > openCallback = new ArchiveOpenCallback(password);
+		FileInfo info;
 
-		HRESULT hr = archive->Open(inFile, nullptr, openCallback);
-		if (hr != S_OK)
+		// Get uncompressed size of file
+		CPropVariant prop;
+		archive->GetProperty(i, kpidSize, &prop);
+		info.Size = prop.uhVal.QuadPart;
+
+		// Get packed size of file
+		archive->GetProperty(i, kpidPackSize, &prop);
+		info.PackedSize = prop.uhVal.QuadPart;
+
+		// Get is directory property
+		archive->GetProperty(i, kpidIsDir, &prop);
+		info.IsDirectory = prop.boolVal != VARIANT_FALSE;
+
+		// Get name of file
+		archive->GetProperty(i, kpidPath, &prop);
+
+		//valid string?
+		if (prop.vt == VT_BSTR)
 		{
-			return false;
+			info.FileName = BstrToTString(prop.bstrVal);
 		}
 
-		// List command
-		UInt32 numItems = 0;
-		archive->GetNumberOfItems(&numItems);
-		for (UInt32 i = 0; i < numItems; i++)
-		{
-			FileInfo info;
+		// Get create time
+		archive->GetProperty(i, kpidCTime, &prop);
+		info.CreationTime = prop.filetime;
 
-			// Get uncompressed size of file
-			CPropVariant prop;
-			archive->GetProperty(i, kpidSize, &prop);
-			info.Size = prop.uhVal.QuadPart;
+		// Get last access time
+		archive->GetProperty(i, kpidATime, &prop);
+		info.LastAccessTime = prop.filetime;
 
-			// Get packed size of file
-			archive->GetProperty(i, kpidPackSize, &prop);
-			info.PackedSize = prop.uhVal.QuadPart;
+		// Get modify time
+		archive->GetProperty(i, kpidMTime, &prop);
+		info.LastWriteTime = prop.filetime;
 
-			// Get is directory property
-			archive->GetProperty(i, kpidIsDir, &prop);
-			info.IsDirectory = prop.boolVal != VARIANT_FALSE;
+		// Get attributes
+		archive->GetProperty(i, kpidAttrib, &prop);
+		info.Attributes = prop.uintVal;
 
-			// Get name of file
-			archive->GetProperty(i, kpidPath, &prop);
-
-			//valid string?
-			if (prop.vt == VT_BSTR)
-			{
-				info.FileName = BstrToTString(prop.bstrVal);
-			}
-
-			// Get create time
-			archive->GetProperty(i, kpidCTime, &prop);
-			info.CreationTime = prop.filetime;
-
-			// Get last access time
-			archive->GetProperty(i, kpidATime, &prop);
-			info.LastAccessTime = prop.filetime;
-
-			// Get modify time
-			archive->GetProperty(i, kpidMTime, &prop);
-			info.LastWriteTime = prop.filetime;
-
-			// Get attributes
-			archive->GetProperty(i, kpidAttrib, &prop);
-			info.Attributes = prop.uintVal;
-
-			// pass back the found value and call the callback function if set
-			if (callback)
-			{
-				callback->OnFileFound(info);
-			}
-		}
-
-		archive->Close();
-
+		// pass back the found value and call the callback function if set
 		if (callback)
 		{
-			callback->OnListingDone(m_archivePath);
+			callback->OnFileFound(info);
 		}
-
-		return true;
 	}
+
+	archive->Close();
+
+	if (callback)
+	{
+		callback->OnListingDone(m_archivePath);
+	}
+
+	return true;
+}
 }
