@@ -1,4 +1,5 @@
 @echo off
+pushd ..
 md export\Include >nul 2>&1
 md export\Lib >nul 2>&1
 
@@ -11,3 +12,4 @@ for /f "tokens=*" %%i in (%file_list%) do (
 )
 
 copy Lib\*.lib export\Lib >nul
+popd
