@@ -11,12 +11,12 @@ SevenZipWrapper::SevenZipWrapper()
 	m_extractor.SetLibrary(&m_lib);
 }
 
-SevenZipWrapper::SevenZipWrapper(const TString& libPath) : SevenZipWrapper()
+SevenZipWrapper::SevenZipWrapper(const tstring& libPath) : SevenZipWrapper()
 {
 	SetLibPath(libPath);
 }
 
-bool SevenZipWrapper::OpenArchive(const TString& archivePath, const TString& password /*= _T("")*/)
+bool SevenZipWrapper::OpenArchive(const tstring& archivePath, const tstring& password /*= _T("")*/)
 {
 	ATLASSERT(m_libLoaded);
 	if (m_libLoaded)
@@ -29,7 +29,7 @@ bool SevenZipWrapper::OpenArchive(const TString& archivePath, const TString& pas
 	return m_libLoaded;
 }
 
-bool SevenZipWrapper::CreateArchive(const TString& archivePath, const TString& password /*= _T("")*/)
+bool SevenZipWrapper::CreateArchive(const tstring& archivePath, const tstring& password /*= _T("")*/)
 {
 	ATLASSERT(m_libLoaded);
 	if (!m_libLoaded)

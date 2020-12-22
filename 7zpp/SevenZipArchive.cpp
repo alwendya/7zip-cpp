@@ -5,7 +5,7 @@
 
 namespace SevenZip
 {
-SevenZipArchive::SevenZipArchive(SevenZipLibrary* library, const TString& archivePath)
+SevenZipArchive::SevenZipArchive(SevenZipLibrary* library, const tstring& archivePath)
 	: m_library(library)
 	, m_archivePath(archivePath)
 {

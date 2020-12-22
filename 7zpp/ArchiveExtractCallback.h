@@ -20,15 +20,15 @@ private:
 
 	long m_refCount = 0;
 	CComPtr< IInArchive > m_archiveHandler;
-	TString m_directory;
+	tstring m_directory;
 
-	TString m_password;
+	tstring m_password;
 
-	TString m_relPath;
-	TString m_absPath;
+	tstring m_relPath;
+	tstring m_absPath;
 	bool m_isDir = false;
 
-	TString m_archivePath;
+	tstring m_archivePath;
 
 	bool m_hasAttrib = false;
 	UInt32 m_attrib = 0;
@@ -43,7 +43,7 @@ private:
 
 public:
 
-	ArchiveExtractCallback(const CComPtr< IInArchive >& archiveHandler, const TString& directory, const TString& archivePath, const TString& password, IProgressCallback* callback);
+	ArchiveExtractCallback(const CComPtr< IInArchive >& archiveHandler, const tstring& directory, const tstring& archivePath, const tstring& password, IProgressCallback* callback);
 	virtual ~ArchiveExtractCallback() = default;
 
 	STDMETHOD(QueryInterface)(REFIID iid, void** ppvObject);
@@ -74,7 +74,7 @@ private:
 	void GetPropertySize(UInt32 index);
 
 	void EmitDoneCallback();
-	void EmitFileDoneCallback(const TString& path);
+	void EmitFileDoneCallback(const tstring& path);
 };
 }
 }

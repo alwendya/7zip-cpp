@@ -20,7 +20,7 @@ public:
 	~SevenZipLibrary();
 
 	bool Load();
-	bool Load(const TString& libraryPath);
+	bool Load(const tstring& libraryPath);
 	void Free();
 
 	bool CreateObject(const GUID& clsID, const GUID& interfaceID, void** outObject) const;

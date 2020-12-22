@@ -12,13 +12,13 @@ namespace SevenZip
 namespace intl
 {
 
-	const TString EmptyFileAlias = _T("[Content]");
+	const tstring EmptyFileAlias = _T("[Content]");
 
 
 MemExtractCallback::MemExtractCallback(const CComPtr< IInArchive >& archiveHandler,
 									   std::vector<BYTE>& buffer,
-									   const TString& archivePath,
-									   const TString& password,
+									   const tstring& archivePath,
+									   const tstring& password,
 									   IProgressCallback* callback)
 	: m_archiveHandler(archiveHandler)
 	, m_buffer(buffer)
@@ -269,7 +269,7 @@ void MemExtractCallback::EmitDoneCallback()
 	}
 }
 
-void MemExtractCallback::EmitFileDoneCallback(const TString& path)
+void MemExtractCallback::EmitFileDoneCallback(const tstring& path)
 {
 	if (m_callback != nullptr)
 	{

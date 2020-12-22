@@ -14,12 +14,12 @@ namespace SevenZip
 
 using namespace intl;
 
-SevenZipExtractor::SevenZipExtractor(SevenZipLibrary* library, const TString& archivePath)
+SevenZipExtractor::SevenZipExtractor(SevenZipLibrary* library, const tstring& archivePath)
 	: SevenZipArchive(library, archivePath)
 {
 }
 
-bool SevenZipExtractor::ExtractArchive(const TString& destDirectory, IProgressCallback* callback /*= nullptr*/)
+bool SevenZipExtractor::ExtractArchive(const tstring& destDirectory, IProgressCallback* callback /*= nullptr*/)
 {
 	CComPtr< IStream > archiveStream = FileSys::OpenFileToRead(m_archivePath);
 
@@ -33,7 +33,7 @@ bool SevenZipExtractor::ExtractArchive(const TString& destDirectory, IProgressCa
 
 bool SevenZipExtractor::ExtractFilesFromArchive(const unsigned int* fileIndices,
 												const unsigned int numberFiles,
-												const TString& destDirectory,
+												const tstring& destDirectory,
 												IProgressCallback* callback /*= nullptr*/)
 {
 	CComPtr< IStream > archiveStream = FileSys::OpenFileToRead(m_archivePath);
@@ -89,7 +89,7 @@ bool SevenZipExtractor::ExtractFileToMemory(const unsigned int index, std::vecto
 bool SevenZipExtractor::ExtractFilesFromArchive(const CComPtr<IStream>& archiveStream,
 												const unsigned int* filesIndices,
 												const unsigned int numberFiles,
-												const TString& destDirectory,
+												const tstring& destDirectory,
 												IProgressCallback* callback)
 {
 	CComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(*m_library, m_compressionFormat);
@@ -121,7 +121,7 @@ bool SevenZipExtractor::ExtractFilesFromArchive(const CComPtr<IStream>& archiveS
 	return true;
 }
 
-bool SevenZipExtractor::ExtractFile(const TString& filename, const TString& path, bool bUseFullPath /*= false*/)
+bool SevenZipExtractor::ExtractFile(const tstring& filename, const tstring& path, bool bUseFullPath /*= false*/)
 {
 	std::vector<int> indices;
 	if (!FindFilesInArchive(filename, indices, bUseFullPath, true)) return false;
@@ -129,7 +129,7 @@ bool SevenZipExtractor::ExtractFile(const TString& filename, const TString& path
 	return ExtractFilesFromArchive((unsigned int*)indices.data(), (unsigned int)indices.size(), path);
 }
 
-bool SevenZipExtractor::ExtractFileToMemory(const TString& filename, std::vector<BYTE>& memBuffer, bool bUseFullPath /*= false*/)
+bool SevenZipExtractor::ExtractFileToMemory(const tstring& filename, std::vector<BYTE>& memBuffer, bool bUseFullPath /*= false*/)
 {
 	std::vector<int> indices;
 	if (!FindFilesInArchive(filename, indices, bUseFullPath, true)) return false;
@@ -138,7 +138,7 @@ bool SevenZipExtractor::ExtractFileToMemory(const TString& filename, std::vector
 	return ExtractFileToMemory(indices[0], memBuffer);
 }
 
-bool SevenZipExtractor::FindFilesInArchive(const TString& filename, std::vector<int>& indices, bool bUseFullPath, bool bOnlyFirst)
+bool SevenZipExtractor::FindFilesInArchive(const tstring& filename, std::vector<int>& indices, bool bUseFullPath, bool bOnlyFirst)
 {
 	const auto& files = GetItemsNames();
 #ifdef _UNICODE

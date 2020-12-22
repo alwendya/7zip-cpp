@@ -13,29 +13,29 @@ namespace SevenZip
 {
 using namespace intl;
 
-const TString SearchPatternAllFiles = _T("*");
+const tstring SearchPatternAllFiles = _T("*");
 
-SevenZipCompressor::SevenZipCompressor(SevenZipLibrary* library, const TString& archivePath)
+SevenZipCompressor::SevenZipCompressor(SevenZipLibrary* library, const tstring& archivePath)
 	: SevenZipArchive(library, archivePath)
 {
 }
 
-bool SevenZipCompressor::AddDirectory(const TString& directory, bool includeSubdirs /*= true*/)
+bool SevenZipCompressor::AddDirectory(const tstring& directory, bool includeSubdirs /*= true*/)
 {
 	return AddFilesToList(directory, SearchPatternAllFiles, m_absolutePath ? _T("") : FileSys::GetPath(directory), includeSubdirs);
 }
 
-bool SevenZipCompressor::AddFiles(const TString& directory, const TString& searchFilter, bool includeSubdirs /*= true*/)
+bool SevenZipCompressor::AddFiles(const tstring& directory, const tstring& searchFilter, bool includeSubdirs /*= true*/)
 {
 	return AddFilesToList(directory, searchFilter, m_absolutePath ? _T("") : directory, includeSubdirs);
 }
 
-bool SevenZipCompressor::AddAllFiles(const TString& directory, bool includeSubdirs /*= true*/)
+bool SevenZipCompressor::AddAllFiles(const tstring& directory, bool includeSubdirs /*= true*/)
 {
 	return AddFilesToList(directory, SearchPatternAllFiles, m_absolutePath ? _T("") : directory, includeSubdirs);
 }
 
-bool SevenZipCompressor::AddMemory(const TString& filePath, void* memPointer, size_t size)
+bool SevenZipCompressor::AddMemory(const tstring& filePath, void* memPointer, size_t size)
 {
 	FilePathInfo memFile;
 	memFile.rootPath = FileSys::GetPath(filePath);
@@ -52,7 +52,7 @@ bool SevenZipCompressor::AddMemory(const TString& filePath, void* memPointer, si
 	return true;
 }
 
-bool SevenZipCompressor::AddFile(const TString& filePath)
+bool SevenZipCompressor::AddFile(const tstring& filePath)
 {
 	const auto& files = FileSys::GetFile(filePath, m_absolutePath);
 
@@ -88,7 +88,7 @@ bool SevenZipCompressor::DoCompress(IProgressCallback* callback /*= nullptr*/)
 	SetCompressionProperties(archiver);
 
 	//Set full outputFilePath including ending
-	if (m_archivePath.rfind('.') == TString::npos)
+	if (m_archivePath.rfind('.') == tstring::npos)
 	{
 		m_archivePath += UsefulFunctions::EndingFromCompressionFormat(m_compressionFormat);
 	}
@@ -131,7 +131,7 @@ CComPtr< IStream > SevenZipCompressor::OpenArchiveStream() const
 	return fileStream;
 }
 
-bool SevenZipCompressor::AddFilesToList(const TString& directory, const TString& searchPattern, const TString& pathPrefix, bool recursion)
+bool SevenZipCompressor::AddFilesToList(const tstring& directory, const tstring& searchPattern, const tstring& pathPrefix, bool recursion)
 {
 	if (!FileSys::DirectoryExists(directory))
 	{

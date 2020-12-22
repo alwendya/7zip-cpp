@@ -6,13 +6,13 @@
 namespace SevenZip
 {
 #ifdef _UNICODE
-using TString = std::wstring;
+using tstring = std::wstring;
 #else
-using TString = std::string;
+using tstring = std::string;
 #endif
 }
 namespace SevenZip
 {
-BSTR TStringAllocSysString(const TString& string);
-TString BstrToTString(BSTR string);
+BSTR TStringAllocSysString(const tstring& string);
+tstring BstrToTString(BSTR string);
 }

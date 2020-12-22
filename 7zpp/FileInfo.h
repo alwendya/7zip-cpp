@@ -7,7 +7,7 @@ namespace intl
 {
 struct FileInfo
 {
-	TString		FileName;
+	tstring		FileName;
 	FILETIME	LastWriteTime = { 0 };
 	FILETIME	CreationTime = { 0 };
 	FILETIME	LastAccessTime = { 0 };
@@ -21,8 +21,8 @@ struct FileInfo
 
 struct FilePathInfo : public FileInfo
 {
-	TString		rootPath;
-	TString		FilePath;
+	tstring		rootPath;
+	tstring		FilePath;
 };
 }
 }

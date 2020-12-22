@@ -5,9 +5,9 @@
 namespace SevenZip
 {
 
-TString StrFmt(const TCHAR* format, ...)
+tstring StrFmt(const TCHAR* format, ...)
 {
-	TString result;
+	tstring result;
 	TCHAR* buffer;
 	int		sz;
 	va_list	args;
@@ -25,19 +25,19 @@ TString StrFmt(const TCHAR* format, ...)
 	return result;
 }
 
-TString GetWinErrMsg(const TString& contextMessage, DWORD lastError)
+tstring GetWinErrMsg(const tstring& contextMessage, DWORD lastError)
 {
 	// TODO: use FormatMessage to get the appropriate message from the
 	return StrFmt(_T("%s: GetLastError = %lu"), contextMessage.c_str(), lastError);
 }
 
-TString GetCOMErrMsg(const TString& contextMessage, HRESULT lastError)
+tstring GetCOMErrMsg(const tstring& contextMessage, HRESULT lastError)
 {
 	// TODO: use FormatMessage to get the appropriate message from the
 	return StrFmt(_T("%s: HRESULT = 0x%08X"), contextMessage.c_str(), lastError);
 }
 
-SevenZipException::SevenZipException(const TString& message)
+SevenZipException::SevenZipException(const tstring& message)
 	: m_message(message)
 {
 }

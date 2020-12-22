@@ -4,7 +4,7 @@
 namespace SevenZip
 {
 
-BSTR TStringAllocSysString(const TString& string)
+BSTR TStringAllocSysString(const tstring& string)
 {
 #ifdef _UNICODE
 	return ::SysAllocString(string.c_str());
@@ -20,7 +20,7 @@ BSTR TStringAllocSysString(const TString& string)
 #endif
 }
 
-SevenZip::TString BstrToTString(BSTR bstr)
+SevenZip::tstring BstrToTString(BSTR bstr)
 {
 #ifdef _UNICODE
 	return bstr;

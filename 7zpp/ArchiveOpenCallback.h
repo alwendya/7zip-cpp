@@ -15,11 +15,11 @@ class ArchiveOpenCallback : public IArchiveOpenCallback, public ICryptoGetTextPa
 private:
 
 	long m_refCount = 0;
-	TString m_password;
+	tstring m_password;
 
 public:
 
-	ArchiveOpenCallback(const TString& password);
+	ArchiveOpenCallback(const tstring& password);
 	virtual ~ArchiveOpenCallback() = default;
 
 	STDMETHOD(QueryInterface)(REFIID iid, void** ppvObject);

@@ -6,7 +6,7 @@
 namespace SevenZip
 {
 
-const TString DefaultLibraryPath = _T("7z.dll");
+const tstring DefaultLibraryPath = _T("7z.dll");
 
 SevenZipLibrary::~SevenZipLibrary()
 {
@@ -18,7 +18,7 @@ bool SevenZipLibrary::Load()
 	return Load(DefaultLibraryPath);
 }
 
-bool SevenZipLibrary::Load(const TString& libraryPath)
+bool SevenZipLibrary::Load(const tstring& libraryPath)
 {
 	Free();
 	m_dll = LoadLibrary(libraryPath.c_str());

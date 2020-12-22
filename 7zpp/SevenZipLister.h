@@ -11,16 +11,16 @@ namespace SevenZip
 class SevenZipLister : public SevenZipArchive
 {
 public:
-	TString m_archivePath;
+	tstring m_archivePath;
 
 	SevenZipLister() = default;
-	SevenZipLister(SevenZipLibrary* library, const TString& archivePath);
+	SevenZipLister(SevenZipLibrary* library, const tstring& archivePath);
 	virtual ~SevenZipLister() = default;
 
-	virtual bool ListArchive(const TString& password, ListCallback* callback = nullptr);
+	virtual bool ListArchive(const tstring& password, ListCallback* callback = nullptr);
 
 
 private:
-	bool ListArchive(const CComPtr< IStream >& archiveStream, const TString& password, ListCallback* callback);
+	bool ListArchive(const CComPtr< IStream >& archiveStream, const tstring& password, ListCallback* callback);
 };
 }

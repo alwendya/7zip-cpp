@@ -11,21 +11,21 @@ class FileSys
 {
 public:
 
-	static TString GetPath(const TString& filePath);
-	static TString GetFileName(const TString& filePathOrName);
-	static TString AppendPath(const TString& left, const TString& right);
-	static TString ExtractRelativePath(const TString& basePath, const TString& fullPath);
+	static tstring GetPath(const tstring& filePath);
+	static tstring GetFileName(const tstring& filePathOrName);
+	static tstring AppendPath(const tstring& left, const tstring& right);
+	static tstring ExtractRelativePath(const tstring& basePath, const tstring& fullPath);
 
-	static bool DirectoryExists(const TString& path);
-	static bool IsDirectoryEmptyRecursive(const TString& path);
+	static bool DirectoryExists(const tstring& path);
+	static bool IsDirectoryEmptyRecursive(const tstring& path);
 
-	static bool CreateDirectoryTree(const TString& path);
+	static bool CreateDirectoryTree(const tstring& path);
 
-	static std::vector< FilePathInfo > GetFile(const TString& filePathOrName, bool absolutePath = false);
-	static std::vector< FilePathInfo > GetFilesInDirectory(const TString& directory, const TString& searchPattern, const TString& pathPrefix, bool recursive);
+	static std::vector< FilePathInfo > GetFile(const tstring& filePathOrName, bool absolutePath = false);
+	static std::vector< FilePathInfo > GetFilesInDirectory(const tstring& directory, const tstring& searchPattern, const tstring& pathPrefix, bool recursive);
 
-	static CComPtr< IStream > OpenFileToRead(const TString& filePath);
-	static CComPtr< IStream > OpenFileToWrite(const TString& filePath);
+	static CComPtr< IStream > OpenFileToRead(const tstring& filePath);
+	static CComPtr< IStream > OpenFileToWrite(const tstring& filePath);
 };
 }
 }

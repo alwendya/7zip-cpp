@@ -65,7 +65,7 @@ struct EnumerationDefinition
 		const TCHAR* string = nullptr;
 	};
 
-	static TEnum Parse(const TString& string, const TEnum defaultValue)
+	static TEnum Parse(const tstring& string, const TEnum defaultValue)
 	{
 		for (const auto& it = DerivedDef::Strings; it->string != nullptr; ++it)
 		{
@@ -77,7 +77,7 @@ struct EnumerationDefinition
 		return defaultValue;
 	}
 
-	static TString Format(const TEnum& value)
+	static tstring Format(const TEnum& value)
 	{
 		for (const auto& it = DerivedDef::Strings; it->string != nullptr; ++it)
 		{
@@ -86,7 +86,7 @@ struct EnumerationDefinition
 				return it->string;
 			}
 		}
-		return TString();
+		return tstring();
 	}
 };
 
@@ -114,14 +114,14 @@ public:
 
 	EnumerationValue(const TEnum& value) : m_value(value) {}
 
-	static ThisClass Parse(const TString& string)
+	static ThisClass Parse(const tstring& string)
 	{
 		return ThisClass(TEnumClass::Parse(string, DefaultValue));
 	}
 
 	const TEnum& GetValue() const { return m_value; }
 
-	TString GetString() const { return TEnumClass::Format(m_value); }
+	tstring GetString() const { return TEnumClass::Format(m_value); }
 
 	operator TEnum() const { return m_value; }
 

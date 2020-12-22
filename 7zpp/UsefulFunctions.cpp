@@ -79,8 +79,8 @@ CComPtr< IOutArchive > UsefulFunctions::GetArchiveWriter(const SevenZipLibrary& 
 	return archive;
 }
 
-bool UsefulFunctions::GetNumberOfItems(const SevenZipLibrary& library, const TString& archivePath,
-									   const CompressionFormatEnum& format, const TString& password, size_t& numberofitems)
+bool UsefulFunctions::GetNumberOfItems(const SevenZipLibrary& library, const tstring& archivePath,
+									   const CompressionFormatEnum& format, const tstring& password, size_t& numberofitems)
 {
 	CComPtr< IStream > fileStream = FileSys::OpenFileToRead(archivePath);
 
@@ -116,8 +116,8 @@ bool UsefulFunctions::GetNumberOfItems(const SevenZipLibrary& library, const TSt
 	return true;
 }
 
-bool UsefulFunctions::GetItemsNames(const SevenZipLibrary& library, const TString& archivePath,
-									const CompressionFormatEnum& format, const TString& password,
+bool UsefulFunctions::GetItemsNames(const SevenZipLibrary& library, const tstring& archivePath,
+									const CompressionFormatEnum& format, const tstring& password,
 									size_t& numberofitems, std::vector<std::wstring>& itemnames, std::vector<size_t>& origsizes)
 {
 	CComPtr< IStream > fileStream = FileSys::OpenFileToRead(archivePath);
@@ -187,8 +187,8 @@ bool UsefulFunctions::GetItemsNames(const SevenZipLibrary& library, const TStrin
 	return true;
 }
 
-bool UsefulFunctions::DetectCompressionFormat(const SevenZipLibrary& library, const TString& archivePath,
-											  CompressionFormatEnum& archiveCompressionFormat, const TString& password)
+bool UsefulFunctions::DetectCompressionFormat(const SevenZipLibrary& library, const tstring& archivePath,
+											  CompressionFormatEnum& archiveCompressionFormat, const tstring& password)
 {
 	CComPtr< IStream > fileStream = FileSys::OpenFileToRead(archivePath);
 
@@ -253,7 +253,7 @@ bool UsefulFunctions::DetectCompressionFormat(const SevenZipLibrary& library, co
 	return false;
 }
 
-const TString UsefulFunctions::EndingFromCompressionFormat(const CompressionFormatEnum& format)
+const tstring UsefulFunctions::EndingFromCompressionFormat(const CompressionFormatEnum& format)
 {
 	switch (format)
 	{

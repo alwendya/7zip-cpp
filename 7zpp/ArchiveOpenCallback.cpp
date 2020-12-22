@@ -9,7 +9,7 @@ namespace SevenZip
 namespace intl
 {
 
-ArchiveOpenCallback::ArchiveOpenCallback(const TString& password)
+ArchiveOpenCallback::ArchiveOpenCallback(const tstring& password)
 	: m_password(password)
 {
 }

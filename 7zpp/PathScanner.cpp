@@ -8,19 +8,19 @@ namespace SevenZip
 namespace intl
 {
 
-void PathScanner::Scan(const TString& root, const TString& pathPrefix, Callback& cb)
+void PathScanner::Scan(const tstring& root, const tstring& pathPrefix, Callback& cb)
 {
 	Scan(root, pathPrefix, _T("*"), cb);
 }
 
-void PathScanner::Scan(const TString& root, const TString& pathPrefix, const TString& searchPattern, Callback& cb)
+void PathScanner::Scan(const tstring& root, const tstring& pathPrefix, const tstring& searchPattern, Callback& cb)
 {
-	std::deque< TString > directories;
+	std::deque< tstring > directories;
 	directories.push_back(root);
 
 	while (!directories.empty())
 	{
-		TString directory = directories.front();
+		tstring directory = directories.front();
 		directories.pop_front();
 
 		if (ExamineFiles(directory, searchPattern, pathPrefix, cb))
@@ -32,7 +32,7 @@ void PathScanner::Scan(const TString& root, const TString& pathPrefix, const TSt
 	}
 }
 
-bool PathScanner::ExamineFiles(const TString& directory, const TString& searchPattern, const TString& pathPrefix, Callback& cb)
+bool PathScanner::ExamineFiles(const tstring& directory, const tstring& searchPattern, const tstring& pathPrefix, Callback& cb)
 {
 	const auto& findStr = FileSys::AppendPath(directory, searchPattern);
 	bool exit = false;
@@ -64,7 +64,7 @@ bool PathScanner::ExamineFiles(const TString& directory, const TString& searchPa
 	return exit;
 }
 
-void PathScanner::ExamineDirectories(const TString& directory, std::deque< TString >& subDirs, const TString& pathPrefix, Callback& cb)
+void PathScanner::ExamineDirectories(const tstring& directory, std::deque< tstring >& subDirs, const tstring& pathPrefix, Callback& cb)
 {
 	const auto& findStr = FileSys::AppendPath(directory, _T("*"));
 
@@ -87,12 +87,12 @@ void PathScanner::ExamineDirectories(const TString& directory, std::deque< TStri
 	FindClose(hFile);
 }
 
-bool PathScanner::IsAllFilesPattern(const TString& searchPattern)
+bool PathScanner::IsAllFilesPattern(const tstring& searchPattern)
 {
 	return searchPattern == _T("*") || searchPattern == _T("*.*");
 }
 
-bool PathScanner::IsSpecialFileName(const TString& fileName)
+bool PathScanner::IsSpecialFileName(const tstring& fileName)
 {
 	return fileName == _T(".") || fileName == _T("..");
 }
@@ -102,7 +102,7 @@ bool PathScanner::IsDirectory(const WIN32_FIND_DATA& fdata)
 	return (fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
 }
 
-FilePathInfo PathScanner::ConvertFindInfo(const TString& directory, const TString& pathPrefix, const WIN32_FIND_DATA& fdata)
+FilePathInfo PathScanner::ConvertFindInfo(const tstring& directory, const tstring& pathPrefix, const WIN32_FIND_DATA& fdata)
 {
 	FilePathInfo file;
 	file.rootPath = pathPrefix;

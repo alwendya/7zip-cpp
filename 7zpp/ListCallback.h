@@ -18,6 +18,6 @@ public:
 	/*
 	Called when all the files have been listed
 	*/
-	virtual void OnListingDone(const TString& /*path*/) {}
+	virtual void OnListingDone(const tstring& /*path*/) {}
 };
 }

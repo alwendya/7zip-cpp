@@ -8,13 +8,13 @@ class SevenZipWrapper
 {
 public:
 	SevenZipWrapper();
-	SevenZipWrapper(const TString& libPath);
+	SevenZipWrapper(const tstring& libPath);
 	~SevenZipWrapper() = default;
 
-	bool CreateArchive(const TString& archivePath, const TString& password = TString());
-	bool OpenArchive(const TString& archivePath, const TString& password = TString());
+	bool CreateArchive(const tstring& archivePath, const tstring& password = tstring());
+	bool OpenArchive(const tstring& archivePath, const tstring& password = tstring());
 
-	bool SetLibPath(const TString& libPath) { return (m_libLoaded = m_lib.Load(libPath)); }
+	bool SetLibPath(const tstring& libPath) { return (m_libLoaded = m_lib.Load(libPath)); }
 
 	SevenZip::SevenZipCompressor& GetCompressor() { return m_compressor; }
 	SevenZip::SevenZipExtractor& GetExtractor() { return m_extractor; }

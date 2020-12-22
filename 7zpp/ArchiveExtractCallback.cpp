@@ -13,9 +13,9 @@ namespace SevenZip
 namespace intl
 {
 
-	const TString EmptyFileAlias = _T("[Content]");
+	const tstring EmptyFileAlias = _T("[Content]");
 
-ArchiveExtractCallback::ArchiveExtractCallback(const CComPtr< IInArchive >& archiveHandler, const TString& directory, const TString& archivePath, const TString& password, IProgressCallback* callback)
+ArchiveExtractCallback::ArchiveExtractCallback(const CComPtr< IInArchive >& archiveHandler, const tstring& directory, const tstring& archivePath, const tstring& password, IProgressCallback* callback)
 	: m_archiveHandler(archiveHandler)
 	, m_directory(directory)
 	, m_archivePath(archivePath)
@@ -153,7 +153,7 @@ STDMETHODIMP ArchiveExtractCallback::GetStream(UInt32 index, ISequentialOutStrea
 		return S_OK;
 	}
 
-	TString absDir = FileSys::GetPath(m_absPath);
+	tstring absDir = FileSys::GetPath(m_absPath);
 	FileSys::CreateDirectoryTree(absDir);
 
 	CComPtr< IStream > fileStream = FileSys::OpenFileToWrite(m_absPath);
@@ -340,7 +340,7 @@ void ArchiveExtractCallback::EmitDoneCallback()
 	}
 }
 
-void ArchiveExtractCallback::EmitFileDoneCallback(const TString& path)
+void ArchiveExtractCallback::EmitFileDoneCallback(const tstring& path)
 {
 	if (m_callback != nullptr)
 	{

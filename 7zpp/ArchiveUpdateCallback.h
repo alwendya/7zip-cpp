@@ -18,14 +18,14 @@ class ArchiveUpdateCallback : public IArchiveUpdateCallback, public ICryptoGetTe
 private:
 
 	long m_refCount = 0;
-	TString m_outputPath;
-	TString m_password;
+	tstring m_outputPath;
+	tstring m_password;
 	const std::vector< FilePathInfo >& m_filePaths;
 	IProgressCallback* m_callback = nullptr;
 
 public:
 
-	ArchiveUpdateCallback(const std::vector< FilePathInfo >& filePaths, const TString& outputFilePath, const TString& password, IProgressCallback* callback);
+	ArchiveUpdateCallback(const std::vector< FilePathInfo >& filePaths, const tstring& outputFilePath, const tstring& password, IProgressCallback* callback);
 	virtual ~ArchiveUpdateCallback() = default;
 
 	STDMETHOD(QueryInterface)(REFIID iid, void** ppvObject);

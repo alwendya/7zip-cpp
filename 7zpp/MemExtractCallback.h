@@ -23,13 +23,13 @@ private:
 	CComPtr< ISequentialOutStream > m_outMemStream;
 	std::vector<BYTE>& m_buffer;
 
-	TString m_archivePath;
-	TString m_password;
+	tstring m_archivePath;
+	tstring m_password;
 
 	bool m_isDir = false;
 	bool m_hasNewFileSize = false;
 	UInt64 m_newFileSize = { 0 };
-	TString m_filePath;
+	tstring m_filePath;
 
 	IProgressCallback* m_callback = nullptr;
 
@@ -37,8 +37,8 @@ public:
 
 	MemExtractCallback(const CComPtr< IInArchive >& archiveHandler,
 					   std::vector<BYTE>& buffer,
-					   const TString& archivePath,
-					   const TString& password,
+					   const tstring& archivePath,
+					   const tstring& password,
 					   IProgressCallback* callback);
 	virtual ~MemExtractCallback() = default;
 
@@ -68,7 +68,7 @@ private:
 	void GetPropertySize(UInt32 index);
 
 	void EmitDoneCallback();
-	void EmitFileDoneCallback(const TString& path);
+	void EmitFileDoneCallback(const tstring& path);
 };
 }
 }

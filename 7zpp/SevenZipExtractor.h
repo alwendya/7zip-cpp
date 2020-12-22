@@ -12,25 +12,25 @@ class SevenZipExtractor : public SevenZipArchive
 public:
 
 	SevenZipExtractor() = default;
-	SevenZipExtractor(SevenZipLibrary* library, const TString& archivePath);
+	SevenZipExtractor(SevenZipLibrary* library, const tstring& archivePath);
 	virtual ~SevenZipExtractor() = default;
 
-	virtual bool ExtractArchive(const TString& directory, IProgressCallback* callback = nullptr);
+	virtual bool ExtractArchive(const tstring& directory, IProgressCallback* callback = nullptr);
 	virtual bool ExtractFilesFromArchive(const unsigned int* fileIndices,
 										 const unsigned int numberFiles,
-										 const TString& directory,
+										 const tstring& directory,
 										 IProgressCallback* callback = nullptr);
 	virtual bool ExtractFileToMemory(const unsigned int index, std::vector<BYTE>& out_buffer, IProgressCallback* callback = nullptr);
 
-	virtual bool ExtractFile(const TString& filename, const TString& path, bool bUseFullPath = false);
-	virtual bool ExtractFileToMemory(const TString& filename, std::vector<BYTE>& memBuffer, bool bUseFullPath = false);
+	virtual bool ExtractFile(const tstring& filename, const tstring& path, bool bUseFullPath = false);
+	virtual bool ExtractFileToMemory(const tstring& filename, std::vector<BYTE>& memBuffer, bool bUseFullPath = false);
 
 private:
-	bool FindFilesInArchive(const TString& filename, std::vector<int>& indices, bool bUseFullPath, bool bOnlyFirst);
+	bool FindFilesInArchive(const tstring& filename, std::vector<int>& indices, bool bUseFullPath, bool bOnlyFirst);
 	bool ExtractFilesFromArchive(const CComPtr<IStream>& archiveStream,
 								 const unsigned int* fileIndices,
 								 const unsigned int numberFiles,
-								 const TString& directory,
+								 const tstring& directory,
 								 IProgressCallback* callback);
 };
 }
