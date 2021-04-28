@@ -164,19 +164,34 @@ namespace SevenZip
 			return false;
 		}
 
-		const size_t numProps = 1;
-		const wchar_t* names[numProps] = { L"x" };
-		CPropVariant values[numProps] = { static_cast<UInt32>(m_compressionLevel.GetValue()) };
-
 		CComPtr< ISetProperties > setter;
 		outArchive->QueryInterface(IID_ISetProperties, reinterpret_cast<void**>(&setter));
 		if (setter == nullptr)
 		{
 			return false;	//Archive does not support setting compression properties
 		}
-
-		HRESULT hr = setter->SetProperties(names, values, numProps);
-
+		HRESULT hr;
+		{
+//Test si mot de passe et si oui, encryption du header
+#ifdef UNICODE
+			if (m_password == L"")
+#else
+			if (m_password == "")
+#endif // !UNICODE
+			{
+				const size_t numProps = 1;
+				const wchar_t* names[numProps] = { L"x" };
+				CPropVariant values[numProps] = { static_cast<UInt32>(m_compressionLevel.GetValue()) };
+				hr = setter->SetProperties(names, values, numProps);
+			}
+			else
+			{
+				const size_t numProps = 2;
+				const wchar_t* names[numProps] = { L"x", L"he" };
+				CPropVariant values[numProps] = { static_cast<UInt32>(m_compressionLevel.GetValue()), true};
+				hr = setter->SetProperties(names, values, numProps);
+			}
+		}
 		// returning S_FALSE also indicates error
 		return (hr == S_OK) ? true : false;
 	}
