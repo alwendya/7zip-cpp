@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 
 #include <vector>
@@ -41,6 +41,7 @@ namespace SevenZip
 
 		void ClearList() { m_fileList.clear(); }
 		void UseAbsolutePaths(bool absolute) { m_absolutePath = absolute; }
+		void EncryptHeader(bool enchead) { m_encryptheader = enchead; }
 		bool CheckValidFormat() const;
 		bool IsListEmpty() const { return m_fileList.empty(); }
 
@@ -50,5 +51,7 @@ namespace SevenZip
 		CComPtr< IStream > OpenArchiveStream() const;
 		bool AddFilesToList(const TString& directory, const TString& searchPattern, const TString& pathPrefix, bool recursion);
 		bool SetCompressionProperties(IUnknown* outArchive) const;
+		bool m_encryptheader = false;
+
 	};
 }
