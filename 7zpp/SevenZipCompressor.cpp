@@ -172,23 +172,27 @@ namespace SevenZip
 		}
 		HRESULT hr;
 		{
-//Test si mot de passe et si oui, encryption du header
+			bool isMDP = false;
 #ifdef UNICODE
-			if (m_password == L"")
+			if (m_password != L"")
 #else
-			if (m_password == "")
+			if (m_password != "")
 #endif // !UNICODE
-			{
-				const size_t numProps = 1;
-				const wchar_t* names[numProps] = { L"x" };
-				CPropVariant values[numProps] = { static_cast<UInt32>(m_compressionLevel.GetValue()) };
-				hr = setter->SetProperties(names, values, numProps);
+				isMDP = true;
+			if (isMDP && m_encryptheader)
+			{//Mot de passe et encryption header
+				//On ajoute le flag he
+					const size_t numProps = 2;
+					const wchar_t* names[numProps] = { L"x", L"he" };
+					CPropVariant values[numProps] = { static_cast<UInt32>(m_compressionLevel.GetValue()), true};
+					hr = setter->SetProperties(names, values, numProps);
 			}
 			else
 			{
-				const size_t numProps = 2;
-				const wchar_t* names[numProps] = { L"x", L"he" };
-				CPropVariant values[numProps] = { static_cast<UInt32>(m_compressionLevel.GetValue()), true};
+				//On passe juste le niveau de compression
+				const size_t numProps = 1;
+				const wchar_t* names[numProps] = { L"x" };
+				CPropVariant values[numProps] = { static_cast<UInt32>(m_compressionLevel.GetValue()) };
 				hr = setter->SetProperties(names, values, numProps);
 			}
 		}
